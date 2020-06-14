@@ -26,5 +26,18 @@ namespace pgpConsole
             }
             return path;
         }
+
+        public static string DecryptPGP(string filename, string privateFileName , string passphrase)
+        {
+            string name = new FileInfo(filename).Name;
+            name = name.Substring(0, name.LastIndexOf('.'));
+
+            string path = $@"{GetLocalPath()}\{name}.txt";
+            using (PGP pgp = new PGP())
+            {
+                pgp.DecryptFile(filename, path, privateFileName, passphrase);
+            }
+            return path;
+        }
     }
 }
