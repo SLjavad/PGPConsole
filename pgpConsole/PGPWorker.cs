@@ -1,6 +1,7 @@
 ﻿using PgpCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace pgpConsole
@@ -15,7 +16,10 @@ namespace pgpConsole
 
         public static string EncryptPGP(string filename , string publicFileName)
         {
-            string path = $@"{GetLocalPath()}\{filename}.pgp";
+            string name = new FileInfo(filename).Name;
+            name = name.Substring(0, name.LastIndexOf('.'));
+
+            string path = $@"{GetLocalPath()}\{name}.pgp";
             using (PGP pgp = new PGP())
             {
                 pgp.EncryptFile(filename, path , publicFileName, true, true);
