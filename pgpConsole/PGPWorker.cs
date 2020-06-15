@@ -16,28 +16,46 @@ namespace pgpConsole
 
         public static string EncryptPGP(string filename , string publicFileName)
         {
-            string name = new FileInfo(filename).Name;
-            name = name.Substring(0, name.LastIndexOf('.'));
-
-            string path = $@"{GetLocalPath()}\{name}.pgp";
-            using (PGP pgp = new PGP())
+            try
             {
-                pgp.EncryptFile(filename, path , publicFileName, true, true);
+                string name = new FileInfo(filename).Name;
+                name = name.Substring(0, name.LastIndexOf('.'));
+
+                string path = $@"{GetLocalPath()}\{name}.pgp";
+                using (PGP pgp = new PGP())
+                {
+                    pgp.EncryptFile(filename, path, publicFileName, true, true);
+                }
+                return path;
             }
-            return path;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return "ERROR";
+            }
+            
         }
 
         public static string DecryptPGP(string filename, string privateFileName , string passphrase)
         {
-            string name = new FileInfo(filename).Name;
-            name = name.Substring(0, name.LastIndexOf('.'));
-
-            string path = $@"{GetLocalPath()}\{name}.txt";
-            using (PGP pgp = new PGP())
+            try
             {
-                pgp.DecryptFile(filename, path, privateFileName, passphrase);
+                string name = new FileInfo(filename).Name;
+                name = name.Substring(0, name.LastIndexOf('.'));
+
+                string path = $@"{GetLocalPath()}\{name}.txt";
+                using (PGP pgp = new PGP())
+                {
+                    pgp.DecryptFile(filename, path, privateFileName, passphrase);
+                }
+                return path;
             }
-            return path;
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return "ERROR";
+            }
+            
         }
     }
 }
